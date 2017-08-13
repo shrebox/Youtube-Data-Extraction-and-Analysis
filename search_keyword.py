@@ -19,23 +19,22 @@ def youtube_search(options):
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
     # Call the search.list method to retrieve results matching the specified
     # query term.
-    search_response = youtube.search().list(q=options.q, part="id,snippet", maxResults=options.max_results)
+    search_response = youtube.search().list(q=options.q, part="id,snippet", maxResults=options.max_results).execute()
     
-    while search_response is not None:
-        activities_doc = search_response.execute(http=http)
-
-        videos = []
-        channels = []
-        playlists = []
-        
-        # create a CSV output for video list    
-        csvFile = open('video_result.csv','w')
-        csvWriter = csv.writer(csvFile)
-        csvWriter.writerow(["title","description","videoId","viewCount","likeCount","dislikeCount","commentCount","channelTitle","CviewCount","CcommentCount","subscriberCount"])
-        channelID = ""
-        
-        # Add each result to the appropriate list, and then display the lists of
-        # matching videos, channels, and playlists.
+    videos = []
+    channels = []
+    playlists = []
+    
+    # create a CSV output for video list    
+    csvFile = open('video_result.csv','w')
+    csvWriter = csv.writer(csvFile)
+    csvWriter.writerow(["title","description","videoId","viewCount","likeCount","dislikeCount","commentCount","channelTitle","CviewCount","CcommentCount","subscriberCount"])
+    channelID = ""
+    nextPageToken = ""
+    
+    # Add each result to the appropriate list, and then display the lists of
+    # matching videos, channels, and playlists.
+    while search_response.get("items",[]) is not None:
         for search_result in search_response.get("items", []):
             if search_result["id"]["kind"] == "youtube#video":
                 #videos.append("%s (%s)" % (search_result["snippet"]["title"],search_result["id"]["videoId"]))
@@ -78,9 +77,14 @@ def youtube_search(options):
                 csvWriter.writerow([title,description,videoId,viewCount,likeCount,dislikeCount,commentCount,channelTitle,viewCCount,commentCCount,subscriberCount])
             #else:
                 #search_result["id"]["kind"] == "youtube#channel":
+            if search_result["id"]["kind"] == "youtube#videoListResponse":
+                nextPageToken = search_result["id"]["nextPageToken"]
 
-        csvFile.close()
-    search_response = youtube.search().list_next(search_response,activities_doc)
+        search_response = youtube.search().list(q=options.q, part="id,snippet", maxResults=options.max_results, pageToken=nextPageToken).execute()
+
+
+    csvFile.close()
+    
       
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Search on YouTube')

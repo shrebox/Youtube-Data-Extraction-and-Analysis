@@ -19,7 +19,7 @@ def youtube_search(options):
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
     # Call the search.list method to retrieve results matching the specified
     # query term.
-    search_response = youtube.search().list(q=options.q, part="id,snippet", maxResults=options.max_results).execute()
+    search_response = youtube.search().list(q=options.q, part="id,snippet,recordingDetails", maxResults=options.max_results).execute()
     
     videos = []
     channels = []
@@ -28,7 +28,7 @@ def youtube_search(options):
     # create a CSV output for video list    
     csvFile = open('video_result.csv','w')
     csvWriter = csv.writer(csvFile)
-    csvWriter.writerow(["title","description","videoId","viewCount","likeCount","dislikeCount","commentCount","channelTitle","CviewCount","CcommentCount","subscriberCount"])
+    csvWriter.writerow(["title","description","videoId","latitude","longitude","altitude","viewCount","likeCount","dislikeCount","commentCount","channelTitle","CviewCount","CcommentCount","subscriberCount"])
     channelID = ""
     nextPageToken = ""
     
@@ -44,7 +44,7 @@ def youtube_search(options):
                 description = unidecode.unidecode(description)
                 channelID = search_result["snippet"]["channelId"]
                 videoId = search_result["id"]["videoId"]
-                video_response = youtube.videos().list(id=videoId,part="statistics").execute()
+                video_response = youtube.videos().list(id=videoId,part="statistics,recordingDetails").execute()
                 for video_result in video_response.get("items",[]):
                     viewCount = video_result["statistics"]["viewCount"]
                     if 'likeCount' not in video_result["statistics"]:
@@ -59,6 +59,9 @@ def youtube_search(options):
                         commentCount = 0
                     else:
                         commentCount = video_result["statistics"]["commentCount"]
+                    latitude = video_result["recordingDetails"]["location"]["latitude"]
+                    longitude = video_result["recordingDetails"]["location"]["longitude"]
+                    altitude = video_result["recordingDetails"]["location"]["altitude"]
                     
                 channel_reponse = youtube.channels().list(id=channelID,part="snippet,statistics").execute()
                 for channel_result in channel_reponse.get("items",[]):
@@ -74,13 +77,13 @@ def youtube_search(options):
                     else:
                         subscriberCount = channel_result["statistics"]["subscriberCount"]
                         
-                csvWriter.writerow([title,description,videoId,viewCount,likeCount,dislikeCount,commentCount,channelTitle,viewCCount,commentCCount,subscriberCount])
+                csvWriter.writerow([title,description,videoId,latitude,longitude,altitude,viewCount,likeCount,dislikeCount,commentCount,channelTitle,viewCCount,commentCCount,subscriberCount])
             #else:
                 #search_result["id"]["kind"] == "youtube#channel":
-            if search_result["id"]["kind"] == "youtube#videoListResponse":
-                nextPageToken = search_result["id"]["nextPageToken"]
-
-        search_response = youtube.search().list(q=options.q, part="id,snippet", maxResults=options.max_results, pageToken=nextPageToken).execute()
+            
+            nextPageToken = search_response["nextPageToken"]
+                
+        search_response = youtube.search().list(q=options.q, part="id,snippet,recordingDetails", maxResults=options.max_results, pageToken=nextPageToken).execute()
 
 
     csvFile.close()

@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load Charts and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Draw the pie chart for Sarah's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawSarahChart);
+
+      // Draw the pie chart for the Anthony's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawAnthonyChart);
+
+       google.charts.setOnLoadCallback(likevsdislikeChart);
+
+       function likevsdislikeChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Age', 'Weight'],
+          [ 338759,      8328],
+          [ 332158,      4451],
+          [ 324725,     6655],
+          [ 255749,      9623],
+          [ 248464,      2230],
+          [ 205979,    2387]
+        ]);
+
+        var options = {
+          title: 'Like vs. Dislike comparison on Top 5 videos',
+          hAxis: {title: 'Like', minValue: 0, maxValue: 338759},
+          vAxis: {title: 'Dislike', minValue: 0, maxValue: 9623},
+          legend: 'none'
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('ldchart_div'));
+
+        chart.draw(data, options);
+      }
+
+      // Callback that draws the pie chart for Sarah's pizza.
+      function drawSarahChart() {
+
+        // Create the data table for Sarah's pizza.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Videos');
+        data.addColumn('number', 'Likes');
+        data.addRows([
+          ['Meet Spot, the robot dog that can run, hop and open doors | Marc Raibert', 1779],
+          ['Why I still have hope for coral reefs | Kristen Marhaver', 936],
+          ['Thoughts on humanity, fame and love | Shah Rukh Khan', 85558],
+          ['How to gain control of your free time | Laura Vanderkam', 34266],
+          ['Your brain hallucinates your conscious reality | Anil Seth', 19752]
+        ]);
+
+        // Set options for Sarah's pie chart.
+        var options = {title:'Top 5 videos(based on search) and likes',
+                       width:400,
+                       height:300};
+
+        // Instantiate and draw the chart for Sarah's pizza.
+        var chart = new google.visualization.BarChart(document.getElementById('Sarah_chart_div'));
+        chart.draw(data, options);
+      }
+
+      // Callback that draws the pie chart for Anthony's pizza.
+      function drawAnthonyChart() {
+
+        // Create the data table for Anthony's pizza.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Videos');
+        data.addColumn('number', 'Likes');
+        data.addRows([
+          ['This is what happens when you reply to spam email | James Veitch', 338759],
+          ['Addiction', 332158],
+          ['My philosophy for a happy life | Sam Berns | TEDxMidAtlantic', 324725], 
+          ['Why people believe they can\'t draw - and how to prove they can | Graham Shaw | TEDxHull', 255749],
+          ['Inside the mind of a master procrastinator | Tim Urban', 248464]
+        ]);
+
+        // Set options for Anthony's pie chart.
+        var options = {title:'Top 5 Videos(based on likes) and Likes',
+                       width:400,
+                       height:300};
+
+        // Instantiate and draw the chart for Anthony's pizza.
+        var chart = new google.visualization.BarChart(document.getElementById('Anthony_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <!--Table and divs that hold the pie charts-->
+    <table class="columns">
+      <tr>
+        <td><div id="Sarah_chart_div" style="border: 1px solid #ccc"></div></td>
+        <td><div id="Anthony_chart_div" style="border: 1px solid #ccc"></div></td>
+      </tr>
+      <tr>
+      <td><div id="ldchart_div" style="border: 1px solid #ccc"></div></td>
+      </tr>
+    </table>
+  </body>
+</html>

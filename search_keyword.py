@@ -20,7 +20,7 @@ def youtube_search(options):
     videos = []
     channels = []
     playlists = []
-    
+
     # create a CSV output for video list    
     csvFile = open('video_result.csv','w')
     csvWriter = csv.writer(csvFile)
@@ -77,7 +77,6 @@ def youtube_search(options):
           
         #updating the search response with the next page token attribute      
         search_response = youtube.search().list(q=options.q, part="id,snippet", maxResults=options.max_results, pageToken=nextPageToken).execute()
-
 
     csvFile.close()
     

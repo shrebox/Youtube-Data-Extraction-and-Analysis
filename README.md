@@ -12,7 +12,7 @@
   This would host the webapp on the local server on the address "localhost:8000"
 
   <h2>3. Predicting the number of likes on a YouTube video URL one can input:</h2>
-  This is the future task that has to be done for the collected data.
+  This task has to be done for the collected data.
   
 
   

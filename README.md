@@ -10,11 +10,10 @@ As youtube allows only 25 results/page, I have used pagination using the "nextPa
  <b> $ python search_keyword.py --q keyword_to_search</b>
 
   <h2>2. Webapp for the data analysis:</h2>
-  https://youtube-analysis-precogtask.herokuapp.com/
   Data collected in part 1 has been analysed using the Google Charts.
   To check the webapp, open it on a browser or host it on local server using the following command in the directory where the     analysis.html is located:
   <b>$ python -m SimpleHTTPServer.</b>
-  This would host the webapp on the local server on the address "localhost:8000".
+  This would host the webapp on the local server on the address "localhost:8000". Page is also hosted on:  https://youtube-analysis-precogtask.herokuapp.com/
   <h2>3. Predicting the number of likes on a YouTube video URL one can input:</h2>
   This task has to be done for the collected data.
   

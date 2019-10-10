@@ -16,7 +16,3 @@ As youtube allows only 25 results/page, I have used pagination using the "nextPa
   This would host the webapp on the local server on the address "localhost:8000". Page is also hosted on:  https://youtube-analysis-precogtask.herokuapp.com/. 
   <h2>3. Predicting the number of likes on a YouTube video URL one can input:</h2>
   This task has to be done for the collected data.
-  
-
-  
-  

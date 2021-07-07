@@ -30,6 +30,7 @@ def youtube_search(options):
     
     # Add each result to the appropriate list, and then display the lists of
     # matching videos, channels, and playlists.
+    # Doing this.
     while search_response.get("items",[]) is not None:
         for search_result in search_response.get("items", []):
             if search_result["id"]["kind"] == "youtube#video":
